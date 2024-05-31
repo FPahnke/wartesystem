@@ -34,6 +34,8 @@ io.on('connection', (socket) => {
 
     socket.on('newNumber', (data) => {
         io.emit('updateNumber', data);
+        waitingCustomers = waitingCustomers.filter(customer => customer.number !== data.number);
+        io.emit('customerListUpdate', waitingCustomers);
     });
 
     socket.on('removeCustomer', (number) => {
@@ -46,6 +48,8 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3000, () => {
-    console.log('Server läuft auf Port 3000');
+// Verwenden Sie den von Heroku bereitgestellten Port oder 3000 lokal
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server läuft auf Port ${PORT}`);
 });
