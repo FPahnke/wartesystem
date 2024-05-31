@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Kundenregistrierung</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .registration-form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .registration-form input,
+        .registration-form textarea,
+        .registration-form button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .registration-form button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .registration-form button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-form">
+        <h1>Kundenregistrierung</h1>
+        <input type="text" id="nameInput" placeholder="Name">
+        <input type="text" id="customerNumberInput" placeholder="Kundennummer">
+        <textarea id="issueInput" placeholder="Anliegen"></textarea>
+        <button id="registerButton">Nummer vergeben</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const registerButton = document.getElementById('registerButton');
+        const nameInput = document.getElementById('nameInput');
+        const customerNumberInput = document.getElementById('customerNumberInput');
+        const issueInput = document.getElementById('issueInput');
+
+        registerButton.addEventListener('click', () => {
+            const issue = issueInput.value.split(' ').slice(0, 10).join(' '); // Beschränkung auf 10 Wörter
+            const customer = {
+                name: nameInput.value,
+                customerNumber: customerNumberInput.value,
+                issue: issue
+            };
+            socket.emit('newCustomer', customer);
+            nameInput.value = '';
+            customerNumberInput.value = '';
+            issueInput.value = '';
+        });
+    </script>
+</body>
+</html>

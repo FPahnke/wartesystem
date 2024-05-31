@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Wartesystem Steuerung</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .control-panel {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .control-panel h1 {
+            margin-bottom: 20px;
+        }
+        .control-panel select,
+        .control-panel input,
+        .control-panel button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .control-panel button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .control-panel button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="control-panel">
+        <h1>Wartesystem Steuerung</h1>
+        <select id="customerSelect">
+            <!-- Optionen werden dynamisch hinzugefügt -->
+        </select>
+        <input type="number" id="placeInput" placeholder="Platz auswählen" min="1" max="3">
+        <button id="sendButton">Nummer senden</button>
+        <button id="removeButton">Kunden entfernen</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const customerSelect = document.getElementById('customerSelect');
+        const placeInput = document.getElementById('placeInput');
+        const sendButton = document.getElementById('sendButton');
+        const removeButton = document.getElementById('removeButton');
+
+        let customers = [];
+
+        socket.on('customerListUpdate', (updatedCustomers) => {
+            customers = updatedCustomers;
+            customerSelect.innerHTML = ''; // Clear the select options
+            customers.forEach((customer, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${customer.number} - ${customer.name} (${customer.customerNumber}): ${customer.issue}`;
+                customerSelect.appendChild(option);
+            });
+        });
+
+        sendButton.addEventListener('click', () => {
+            const selectedIndex = customerSelect.value;
+            const selectedCustomer = customers[selectedIndex];
+            const place = placeInput.value;
+            if (selectedCustomer && place) {
+                const data = {
+                    number: selectedCustomer.number,
+                    place: place,
+                    issue: selectedCustomer.issue
+                };
+                socket.emit('newNumber', data);
+            }
+        });
+
+        removeButton.addEventListener('click', () => {
+            const selectedIndex = customerSelect.value;
+            const selectedCustomer = customers[selectedIndex];
+            if (selectedCustomer) {
+                socket.emit('removeCustomer', selectedCustomer.number);
+            }
+        });
+    </script>
+</body>
+</html>
