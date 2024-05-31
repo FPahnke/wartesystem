@@ -86,8 +86,7 @@
             if (selectedCustomer && place) {
                 const data = {
                     number: selectedCustomer.number,
-                    place: place,
-                    issue: selectedCustomer.issue
+                    place: place
                 };
                 socket.emit('newNumber', data);
             }

@@ -57,7 +57,7 @@
         }, { once: true });
 
         socket.on('updateNumber', (data) => {
-            numberDisplay.innerHTML = `Nummer ${data.number} bitte zu Platz ${data.place}<br>${data.issue}`;
+            numberDisplay.textContent = `Nummer ${data.number} bitte zu Platz ${data.place}`;
             numberDisplay.style.display = 'block';
             signal.play().catch(error => {
                 console.error("Audio play was prevented:", error);

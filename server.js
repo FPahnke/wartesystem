@@ -1,12 +1,12 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const fs = require('fs');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+// Statische Dateien aus dem 'public' Verzeichnis bereitstellen
 app.use(express.static('public'));
 
 let waitingCustomers = [];
@@ -34,8 +34,6 @@ io.on('connection', (socket) => {
 
     socket.on('newNumber', (data) => {
         io.emit('updateNumber', data);
-        waitingCustomers = waitingCustomers.filter(customer => customer.number !== data.number);
-        io.emit('customerListUpdate', waitingCustomers);
     });
 
     socket.on('removeCustomer', (number) => {
