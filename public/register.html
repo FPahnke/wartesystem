@@ -48,7 +48,6 @@
     <div class="registration-form">
         <h1>Kundenregistrierung</h1>
         <input type="text" id="nameInput" placeholder="Name">
-        <input type="text" id="customerNumberInput" placeholder="Kundennummer">
         <textarea id="issueInput" placeholder="Anliegen"></textarea>
         <button id="registerButton">Nummer vergeben</button>
     </div>
@@ -58,7 +57,6 @@
         const socket = io();
         const registerButton = document.getElementById('registerButton');
         const nameInput = document.getElementById('nameInput');
-        const customerNumberInput = document.getElementById('customerNumberInput');
         const issueInput = document.getElementById('issueInput');
 
         registerButton.addEventListener('click', () => {
