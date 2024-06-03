@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f8;
+            background-color: #f4f4f9;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,20 +15,24 @@
         }
         .registration-form {
             background: #fff;
-            padding: 30px;
+            padding: 50px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 300px;
+            width: 400px;
+        }
+        .registration-form h1 {
+            margin-bottom: 30px;
+            font-size: 24px;
         }
         .registration-form input,
         .registration-form textarea,
         .registration-form button {
             display: block;
             width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
+            margin: 15px 0;
+            padding: 15px;
+            font-size: 18px;
             border-radius: 5px;
             border: 1px solid #ddd;
         }
@@ -63,12 +67,10 @@
             const issue = issueInput.value.split(' ').slice(0, 10).join(' '); // Beschränkung auf 10 Wörter
             const customer = {
                 name: nameInput.value,
-                customerNumber: customerNumberInput.value,
                 issue: issue
             };
             socket.emit('newCustomer', customer);
             nameInput.value = '';
-            customerNumberInput.value = '';
             issueInput.value = '';
         });
     </script>

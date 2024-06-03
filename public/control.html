@@ -15,23 +15,24 @@
         }
         .control-panel {
             background: #fff;
-            padding: 30px;
+            padding: 50px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 300px;
+            width: 400px;
         }
         .control-panel h1 {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 24px;
         }
         .control-panel select,
         .control-panel input,
         .control-panel button {
             display: block;
             width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
+            margin: 15px 0;
+            padding: 15px;
+            font-size: 18px;
             border-radius: 5px;
             border: 1px solid #ddd;
         }
@@ -45,8 +46,7 @@
         .control-panel button:hover {
             background: #0056b3;
         }
-       
-       </style>
+    </style>
 </head>
 <body>
     <div class="control-panel">
@@ -58,6 +58,7 @@
         <button id="sendButton">Nummer senden</button>
         <button id="removeButton">Kunden entfernen</button>
     </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
@@ -74,7 +75,7 @@
             customers.forEach((customer, index) => {
                 const option = document.createElement('option');
                 option.value = index;
-                option.textContent = `${customer.number} - ${customer.name} (${customer.customerNumber}): ${customer.issue}`;
+                option.textContent = `${customer.number} - ${customer.name}: ${customer.issue}`;
                 customerSelect.appendChild(option);
             });
         });
