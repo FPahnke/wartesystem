@@ -13,17 +13,18 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
         }
         #number {
-            background: rgba(255, 255, 255, 0.8); /* Heller Hintergrund für starken Kontrast */
-            color: #000;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
             padding: 40px;
             font-size: 68px;
             border-radius: 20px;
             box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
             display: none; /* Start hidden */
             text-align: center;
-            z-index: 2;
+            z-index: 10;
         }
         video {
             position: absolute;
@@ -34,15 +35,8 @@
             object-fit: cover;
             z-index: -1;
         }
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.5); /* Leichter weißer Überlagerungshintergrund */
-            display: none;
-            z-index: 1; /* Zwischen Video und Nummer */
+        .highlight-background {
+            background: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
@@ -61,7 +55,7 @@
         const numberDisplay = document.getElementById('number');
         const signal = document.getElementById('signal');
 
-        // Ensuring the audio can play after user interaction
+        
         document.body.addEventListener('click', () => {
             signal.play().catch(error => {
                 console.error("Audio play was prevented:", error);
@@ -71,11 +65,13 @@
         socket.on('updateNumber', (data) => {
             numberDisplay.textContent = `Nummer ${data.number} bitte zu Platz ${data.place}`;
             numberDisplay.style.display = 'block';
+            body.classList.add("highlight-backround"); //Hintergrund weiß machen
             signal.play().catch(error => {
                 console.error("Audio play was prevented:", error);
             }); // Signal abspielen
             setTimeout(() => {
                 numberDisplay.style.display = 'none';
+                body.classList.remove("highlight-backround"); //Hintergrund wieder entfernen
             }, 10000); // Nach 10 Sekunden ausblenden
         });
     </script>
