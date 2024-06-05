@@ -26,9 +26,15 @@
             text-align: center;
             z-index: 10;
         }
-        .highlight-background {
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(255, 255, 255, 0.7);
-            transition: background-color 0.5s ease;
+            display: none; /* Start hidden */
+            z-index: 5;
         }
         video {
             position: absolute;
@@ -42,6 +48,7 @@
     </style>
 </head>
 <body>
+    <div id="overlay"></div>
     <div id="number">Warte auf Nummer...</div>
     <video id="ad-video" autoplay loop muted>
         <source src="Service-Center Neu.mp4" type="video/mp4">
@@ -53,8 +60,8 @@
     <script>
         const socket = io();
         const numberDisplay = document.getElementById('number');
+        const overlay = document.getElementById('overlay');
         const signal = document.getElementById('signal');
-        const body = document.body;
 
         // Ensuring the audio can play after user interaction
         document.body.addEventListener('click', () => {
@@ -66,13 +73,13 @@
         socket.on('updateNumber', (data) => {
             numberDisplay.textContent = `Nummer ${data.number} bitte zu Platz ${data.place}`;
             numberDisplay.style.display = 'block';
-            body.classList.add("highlight-background"); // Hintergrund weiß machen
+            overlay.style.display = 'block'; // Hintergrund weiß machen
             signal.play().catch(error => {
                 console.error("Audio play was prevented:", error);
             }); // Signal abspielen
             setTimeout(() => {
                 numberDisplay.style.display = 'none';
-                body.classList.remove("highlight-background"); // Hintergrund wieder entfernen
+                overlay.style.display = 'none'; // Hintergrund wieder entfernen
             }, 10000); // Nach 10 Sekunden ausblenden
         });
     </script>
